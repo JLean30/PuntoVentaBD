@@ -3,140 +3,119 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-package Controlador;
-
-import Modelo.Clientes;
-import Vista.Frm_Clientes;
+package controlador;
+import modelo.Cliente;
+import vista.FRM_Clientes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import modelo.ConexionBD;
+import java.util.ArrayList;
 
 /**
- * 
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ *
+ * @author JeanC
  */
-public class Controlador_FRM_clientes implements ActionListener{
+public class Controlador_FRM_Clientes implements ActionListener {
+    
+    private  FRM_Clientes frmClientes;
+    private ConexionBD conexion;
 
-   private Frm_Clientes frmClientes;
-   
-   public MetodosClientes metodosClientes;
-   
-   private ArchivoClientes archivo;
-   
-    public Controlador_FRM_clientes(Frm_Clientes frm){
-              
-         this.frmClientes = frm;
-         
-         this.archivo = new ArchivoClientes();
-         
-         this.metodosClientes= new MetodosClientes(this.archivo.getClientes());
-         
-          }
-    
-    
+
     @Override
-    public void actionPerformed(ActionEvent ae) {
+    public void actionPerformed(ActionEvent e) {
         
-        if(ae.getActionCommand().equals("Limpiar")){
-            
-             this.frmClientes.estadoInicial();
-        }
-       if(ae.getActionCommand().equals("Clientes")){
-           
-         this.frmClientes.estadoInicial();
-           this.frmClientes.setVisible(true);
-           
-       }
-       
-        if(ae.getActionCommand().equals("Buscar")){
-            Clientes temporal = null;
-            temporal = this.metodosClientes.buscar(this.frmClientes.getCedula());
-            //si existe puede modificarlo o eliminarlo//
-            if(temporal != null){
-                
-                 this.frmClientes.setCedula(temporal.getCedula());
-                this.frmClientes.setNombre(temporal.getNombre());
-                this.frmClientes.setApellido1(temporal.getApellido1());
-               this.frmClientes.setApellido2(temporal.getApellido2());
-                this.frmClientes.setTelefono(String.valueOf(temporal.getTelefono()) );
-                this.frmClientes.setDireccion(temporal.getDireccion());
-                this.frmClientes.setEmail(temporal.getEmail());
-                
-                
-                
-               this.frmClientes.hailitarModificarEliminar();
-            
-           } else{//si no existe puede agragarlo//
-                this.frmClientes.mostrarMensaje("Cliente sin registrar \n Ingrese uno nuevo  ");
-                this.frmClientes.habilitarAgregar();
-                
-               
-            }
-        } 
-        
-    
-        
-        if(ae.getActionCommand().equals("Registrar")){
-        Clientes clientes=  null;
-        clientes = this.metodosClientes.obtenerInformacion(this.frmClientes);
-        
-        this.metodosClientes.agregar(clientes);
-        
-        String [] datos = new String [7];
-        
-            datos [0] = clientes.getCedula();
-             datos [1] = clientes.getNombre();
-             datos [2] = clientes.getApellido1();
-             datos [3] = clientes.getApellido2();
-             datos[4] = clientes.getTelefono();
-             datos[5] = clientes.getDireccion();
-             datos[6] = clientes.getEmail();
-       
-        this.frmClientes.agregarClienteTabla(datos);
-        this.frmClientes.mostrarMensaje("Cliente registrado");
-        this.frmClientes.estadoInicial();
-        
-        }
-        
-         if(ae.getActionCommand().equals("Modificar")){
-            Clientes nuevoClientes =null;
-            nuevoClientes = this.metodosClientes.obtenerInformacion(this.frmClientes);
-            
-            this.metodosClientes.modificar(nuevoClientes);
-            
-              String [] datos = new String [7];
-        
-            datos [0] = nuevoClientes.getCedula();
-             datos [1] = nuevoClientes.getNombre();
-             datos [2] = nuevoClientes.getApellido1();
-             datos [3] = nuevoClientes.getApellido2();
-             datos[4] = nuevoClientes.getTelefono();
-             datos[5] = nuevoClientes.getDireccion();
-             datos[6] = nuevoClientes.getEmail();
-            
-             this.frmClientes.modificarClienteTabla(datos);
-            this.frmClientes.estadoInicial();
-            this.frmClientes.mostrarMensaje("Cliente modificado");
-            
-        }
-         
-          if(ae.getActionCommand().equals("Eliminar")){
-            
-            this.metodosClientes.eliminar(this.frmClientes.getCedula());
-            this.frmClientes.eliminarClienteTabla(this.frmClientes.getCedula());
-            this.frmClientes.estadoInicial();
-            this.frmClientes.mostrarMensaje("Cliente eliminado");
-        }
-          
-          
-   }
-    
-    
+        if(e.getActionCommand().equals("Limpiar")){
 
-      public void consolidarInformacion(){
+                //Metodo que mantiene los botones en limpios sin poder ser editados
+                this.frmClientes.estadoInicial();
         
-        this.archivo.setClientes(this.metodosClientes.clientes);
-        this.archivo.crearArchivo();
-        this.archivo.escribirInformacion();
+       }
+        if(e.getActionCommand().equals("Buscar")){
+            
+                Cliente temporal = null;
+                if(this.conexion.buscarCliente(this.frmClientes.getCedulaCliente())){
+                    temporal = this.conexion.getClienteTemp();
+                }
+        //En caso de que exista un producto puede Eliminarlo/Modificarlo ..... Si existe puede agregarlo 
+                if(temporal != null){
+                    
+                    this.frmClientes.setCedulaCliente(temporal.getCedulaCliente());
+                    this.frmClientes.setNombre(temporal.getNombre());
+                    this.frmClientes.setPrimerApellido(temporal.getPrimerApellido());
+                    this.frmClientes.setSegundoApellido((temporal.getSegundoApellido()));
+                    this.frmClientes.setTelefono((temporal.getTelefono()));
+                    this.frmClientes.setDireccion(temporal.getDireccion());
+                    this.frmClientes.setEmail((temporal.getEmail()));
+                    
+                    this.frmClientes.habilitarModificarEliminar();
+
+                }
+                else{
+                    this.frmClientes.habilitarAgregar();
+                    
+
+
+                }
+        }
+        
+        if(e.getActionCommand().equals("Registrar")){
+                    Cliente cliente = null;
+                    cliente = this.frmClientes.obtenerCliente();
+                    this.conexion.registrarCliente(cliente);
+                    String[] datos = new String[5];
+                        datos[0] = cliente.getCedulaCliente();
+                        datos[1] = cliente.getNombre()+""+cliente.getPrimerApellido()+""+cliente.getSegundoApellido();
+                        datos[2] = cliente.getTelefono();
+                        datos[3] = cliente.getDireccion();
+                        datos[4]= cliente.getEmail();
+                    this.frmClientes.agregarUsuarioTabla(datos);
+                    this.frmClientes.mostrarMensaje("Cliente registrado correctamente");
+                    this.frmClientes.estadoInicial();
+        }
+        
+        if(e.getActionCommand().equals("Modificar")){
+                    Cliente nuevoCliente = null;
+                    nuevoCliente = this.frmClientes.obtenerCliente();
+                    this.conexion.modificarCliente(nuevoCliente);
+                    String[] datos = new String[5];
+                        datos[0] = nuevoCliente.getCedulaCliente();
+                        datos[1] = nuevoCliente.getNombre()+""+nuevoCliente.getPrimerApellido()+""+nuevoCliente.getSegundoApellido();
+                        datos[2] = nuevoCliente.getTelefono();
+                        datos[3] = nuevoCliente.getDireccion();
+                        datos[4]= nuevoCliente.getEmail();
+                    this.frmClientes.modificarUsuarioTabla(datos);
+                    this.frmClientes.estadoInicial();
+                    this.frmClientes.mostrarMensaje("Cliente modificado");
+                }
+        
+        if(e.getActionCommand().equals("Eliminar")){
+
+                    this.conexion.eliminarCliente(this.frmClientes.getCedulaCliente());
+                    this.frmClientes.eliminarUsuarioTabla(this.frmClientes.getCedulaCliente());
+                    this.frmClientes.estadoInicial();
+                    this.frmClientes.mostrarMensaje("Cliente eliminado");
+                }
     }
+    public void inicioTabla(ArrayList<Cliente> array){
+        for(Cliente item:array){
+            if(item!=null){
+                String[] datos=new String[5];
+                datos[0] = item.getCedulaCliente();
+                        datos[1] = item.getNombre()+""+item.getPrimerApellido()+""+item.getSegundoApellido();
+                        datos[2] = item.getTelefono();
+                        datos[3] = item.getDireccion();
+                        datos[4]= item.getEmail();
+                this.frmClientes.agregarUsuarioTabla(datos);
+                
+            }
+        }
+    }
+    
+   
+        public Controlador_FRM_Clientes(FRM_Clientes frm, ConexionBD conex){//frm es la interfaz
+            this.frmClientes = frm;
+            this.conexion=conex;
+
+        }
+    
 }

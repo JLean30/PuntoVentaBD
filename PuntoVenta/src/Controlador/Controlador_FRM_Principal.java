@@ -3,126 +3,153 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-package Controlador;
-import Vista.Frm_Clientes;
+package controlador;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import Vista.Frm_Productos;
-import Vista.Frm_Proveedores;
-import Vista.Frm_Login;
-import Vista.Frm_Principal;
-import Vista.Frm_Usuarios;
-import Vista.Frm_Facturacion;
-import Vista.FRM_BancoInformacion;
+import  java.awt.event.ActionListener;
+import  vista.FRM_Productos;
+import  vista.FRM_Login;
+import  vista.FRM_Principal;
+import  vista.FRM_Usuarios;
+import vista.FRM_Clientes;
+import vista.FRM_Provedores;
+import vista.FRM_ControlVentas;
+import vista.FRM_Facturacion;
+import modelo.ConexionBD;
+import vista.FRM_ParametrosConexion;
+import controlador.ArchivoConexion;
+import modelo.Conexion;
+
+
+
 
 
 /**
- * 
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ *
+ * @author Melber
  */
-public class Controlador_FRM_Principal implements ActionListener{
+public class Controlador_FRM_Principal implements ActionListener {
+
+    //Formulario de productos
+    private FRM_Productos frmProductos;
+ //formulario de login
+    public  FRM_Login  frmLogin;
     
-private Frm_Productos frmProductos;
-private Frm_Clientes frmClientes;
-private Frm_Proveedores frmProveedores;
+    //formulario  principal
+    public  FRM_Principal frmPrincipal;
+    private FRM_Provedores frmProvedores;
+    private FRM_Clientes frmClientes;
+    private FRM_ControlVentas frmControlVentas;
 
-public Frm_Login frmLogin;
-public Frm_Principal frmPrincipal;
+    //formulario de usuarios
+    private FRM_Usuarios frmUsuarios;
+    private FRM_Facturacion frmFacturacion;
+    private ConexionBD conexion;
+    private FRM_ParametrosConexion frmConexion;
+    private ArchivoConexion archivo;
+    
+    public static String usuario="root";
+    public static String servidor="127.0.0.1";
+    public static String contraseña="";
+    public static String baseDeDatos="puntoVenta";
+    public static String usuarioLogueo="";
 
-private Frm_Usuarios frmUsuarios;
-private Frm_Facturacion frmFacturacion;
-
-//variable interfaz  banco de informacion
-private  FRM_BancoInformacion  frmBancoInformacion;
-
-//variable estatica para almacenar  la direccion del  archivo  usuario
-public static String  direccionBancoActual="";
-
-
-    public Controlador_FRM_Principal(Frm_Principal pFrmPrincipal) {
+    public Controlador_FRM_Principal(FRM_Principal pFRMPrincipal){
+        this.frmPrincipal = pFRMPrincipal;
         
-        this.frmProductos = new Frm_Productos();
-        this.frmUsuarios = new Frm_Usuarios();
-        this.frmClientes = new Frm_Clientes();
-        this.frmProveedores = new Frm_Proveedores();
+        this.archivo=new ArchivoConexion();
+        if(this.archivo.verificarArchivo()){
+            Conexion temp=this.archivo.getLista().get(0);
+            usuario=temp.getUsuario();
+            servidor=temp.getServidor();
+            contraseña=temp.getContrasenna();
+            baseDeDatos=temp.getBaseDeDatos();
+            this.frmPrincipal.mostrarMensaje("base de datos cargada con configuración guardada");
+            
+        }else{
+            this.frmPrincipal.mostrarMensaje("base de datos cargada con configuración default");
+        }
+        this.conexion=new ConexionBD();
         
-        //se crea  una instancia de  banco de informacion
-        this.frmBancoInformacion = new FRM_BancoInformacion(this);
+        //instancia de formulario productos
+        this.frmProductos = new FRM_Productos(this.conexion);
+
+        //instancia de formulario de usuarios Version Clase08
+        this.frmUsuarios  = new FRM_Usuarios(this.conexion);
+        
+        ///referencia de formulario principal
         
         
-        this.frmFacturacion = new Frm_Facturacion(this.frmClientes.controlador.metodosClientes, this.frmProductos.controlador.metodosProductos);
-        this.frmPrincipal= pFrmPrincipal;
-         this.frmLogin = new Frm_Login(this.frmPrincipal);
-         
-         
-         this.frmLogin.controlador.asignaMetodosUsuarios(this.frmUsuarios.controlador.metodosUsuarios);
-         
+        this.frmConexion=new FRM_ParametrosConexion();
+        //ESTO LO PUSE YO PARA QUE ABRIERA LA VENTANA XD
+        this.frmControlVentas=new FRM_ControlVentas(conexion);
+        
+        //intancia de formulario login
+        this.frmLogin = new FRM_Login(this.frmPrincipal,this.conexion);
+        this.frmProvedores = new FRM_Provedores(this.conexion);
+        this.frmClientes = new FRM_Clientes(this.conexion);
+        this.frmFacturacion=new FRM_Facturacion(conexion, this.frmControlVentas);
+        
+        
+        
+        
+        this.frmPrincipal.setVisible(false);
         this.frmLogin.setVisible(true);
     }
 
-
     @Override
-    public void actionPerformed(ActionEvent ae) {
-       
-        if(ae.getActionCommand().equals("Salir")){
-            
+    public void actionPerformed(ActionEvent e) {
+        
+        if(e.getActionCommand().equals("Salir")){
             System.exit(0);
         }
         
-        if(ae.getActionCommand().equals("Productos")){
-            
+        if(e.getActionCommand().equals("Productos")){
             this.frmProductos.setVisible(true);
         }
+        if(e.getActionCommand().equals("Provedores")){
+                    this.frmProvedores.setVisible(true);
+                    
+                }
+                
+                if(e.getActionCommand().equals("Clientes")){
+                    this.frmClientes.setVisible(true);
+                }
+                if(e.getActionCommand().equals("Facturación")){
+                    this.frmFacturacion.setJTUsuario(usuarioLogueo);
+                    //establecer numero de factura Disponible
+                    this.frmFacturacion.countFact=this.conexion.obtenerNumeroFactura();
+                    this.frmFacturacion.setJtxNumero(this.frmFacturacion.countFact);
+                    this.frmFacturacion.setVisible(true);
+                }
+                if(e.getActionCommand().equals("Control de Ventas")){
+                    this.frmControlVentas.totalF();
+                    this.frmControlVentas.setVisible(true);
+                }
         
-        if(ae.getActionCommand().equals("Clientes")){
-            
-            this.frmClientes.setVisible(true);
-        }
-        
-        if(ae.getActionCommand().equals("Proveedores")){
-            
-            this.frmProveedores.setVisible(true);
-        }
-        
-          if(ae.getActionCommand().equals("Facturacion")){
-            
-            this.frmFacturacion.setVisible(true);
-        }
-        
-        if(ae.getActionCommand().equals("Cerrar Sesion")){
-            // se oculta el principal
+        if(e.getActionCommand().equals("CerrarSesion")){
+            //cerrar el principal
             this.frmPrincipal.setVisible(false);
-            
-           this.frmLogin.estadoInicial();
-            //se muestra el formulario logueo
+    
+            this.frmLogin.estadoInicial();
+            //Se muestra  el formulario de login
             this.frmLogin.setVisible(true);
             
+        
             
         }
         
-        if(ae.getActionCommand().equals("Perfiles de Usuarios")){
-            
+        if(e.getActionCommand().equals("Perfiles de Usuarios")){
             this.frmUsuarios.setVisible(true);
-            
+        }
+        if(e.getActionCommand().equals("ParametrosConexion")){
+            this.frmConexion.setVisible(true);
+         
         }
         
-        //se visualiza  el formulario de  banco informacion
-        if(ae.getActionCommand().equals("BancoInformacion")){
-            this.frmBancoInformacion.setVisible(true);
-            
-        }
-        
-        
-        
     }
-    
-    public   void  recargarArchivo(){
-        this.frmUsuarios.controlador.archivo.crearArchivo();
-        this.frmUsuarios.recargarArchivo();
-    }
-            
-    
 
     
-}//cierre de  clase
+    
+    
+    
+}//cierra clase

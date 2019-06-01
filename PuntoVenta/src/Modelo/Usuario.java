@@ -3,58 +3,65 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package modelo;
 
-package Modelo;
-import java.io.Serializable;
+
 /**
- * 
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ *
+ * @author Estudiante
  */
-public class Usuario implements Serializable{
+public class Usuario {
+    private  String usuario,contrasena,nombreCompleto,tipo;
     
-    private String usuario;
-    private String contrasena;
-    private String nombreCompleto;
-    private String tipo;
     
-    public void setUsuario(String pValor){
-        this.usuario=  pValor;
+    //propiedades
+    public  void  setUsuario(String pValor){
+        this.usuario = pValor;
     }
     
-    public String getUsuario(){
-        return this.usuario;
+    public  String  getUsuario(){
+        return  this.usuario;
     }
-    
-     public void setContrasena(String pValor){
-        this.contrasena=  pValor;
+    public  void  setContrasena(String pValor){
+        this.contrasena  =  pValor;
     }
-    
-    public String getContrasena(){
-        return this.contrasena;
+    public  String getContrasena(){
+        return  this.contrasena;
     }
-    
-     public void setNombreCompleto(String pValor){
-        this.nombreCompleto=  pValor;
+    public  void  setNombreCompleto(String pValor){
+        this.nombreCompleto = pValor;
     }
-    
-    public String getNombreCompleto(){
-        return this.nombreCompleto;
+    public  String  getNombreCompleto(){
+        return  this.nombreCompleto;
     }
-    
-     public void setTipo(String pValor){
+    public  void  setTipo(String pValor){
         this.tipo=  pValor;
     }
-    
-    public String getTipo(){
-        return this.tipo;
+    public  String  getTipo(){
+        return  this.tipo;
+    }
+    //Contructo del usuario
+
+    public Usuario() {
+        this.usuario = "";
+        this.contrasena = "";
+        this.nombreCompleto = "";
+        this.tipo = "";
     }
     
-    public Usuario(String pUsuario, String pContrasena, String pNombreCompl, String pTipo){
+    public  Usuario(String pUsuario,String pContrasena,
+            String pNombCompl,String pTipo){
         
         this.setUsuario(pUsuario);
         this.setContrasena(pContrasena);
-        this.setNombreCompleto(pNombreCompl);
+        this.setNombreCompleto(pNombCompl);
         this.setTipo(pTipo);
-        
     }
+    public Usuario(Usuario usr){
+        this.setUsuario(usr.getUsuario());
+        this.setContrasena(usr.getContrasena());
+        this.setNombreCompleto(usr.getNombreCompleto());
+        this.setTipo(usr.getTipo());
+    }
+    
 }

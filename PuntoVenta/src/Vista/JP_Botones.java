@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Vista;
-
-import Controlador.Controlador_FRM_productos;
-import Controlador.Controlador_FRM_clientes;
-import Controlador.Controlador_FRM_proveedores;
-import Controlador.Controlador_FRM_Usuarios;
+package vista;
+import controlador.Controlador_FRM_productos;
+import controlador.Controlador_Frm_Usuarios;
+import controlador.Controlador_FRM_Clientes;
+import controlador.Controlador_FRM_Provedores;
 /**
  *
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author Melber
  */
 public class JP_Botones extends javax.swing.JPanel {
 
@@ -20,81 +19,64 @@ public class JP_Botones extends javax.swing.JPanel {
      */
     public JP_Botones() {
         initComponents();
+    }
+
+    public void agregarControladorProductos(Controlador_FRM_productos  controlador){
+        
+        this.btnConsultar.addActionListener(controlador);
+        this.btnRegistrar.addActionListener(controlador);
+        this.btnModificar.addActionListener(controlador);
+        this.btnEliminar.addActionListener(controlador);
+        this.btnLimpiar.addActionListener(controlador);
+    }
+    public void agregarControladorClientes(Controlador_FRM_Clientes  controlador){
+        
+        this.btnConsultar.addActionListener(controlador);
+        this.btnRegistrar.addActionListener(controlador);
+        this.btnModificar.addActionListener(controlador);
+        this.btnEliminar.addActionListener(controlador);
+        this.btnLimpiar.addActionListener(controlador);
+    }
+    public void agregarControladorProveedores(Controlador_FRM_Provedores  controlador){
+        
+        this.btnConsultar.addActionListener(controlador);
+        this.btnRegistrar.addActionListener(controlador);
+        this.btnModificar.addActionListener(controlador);
+        this.btnEliminar.addActionListener(controlador);
+        this.btnLimpiar.addActionListener(controlador);
+    }
+    
+    public void agregarControladorUsuarios(Controlador_Frm_Usuarios controlador) {
+        
+        this.btnConsultar.addActionListener(controlador);
+        this.btnRegistrar.addActionListener(controlador);
+        this.btnModificar.addActionListener(controlador);
+        this.btnEliminar.addActionListener(controlador);
+        this.btnLimpiar.addActionListener(controlador);
         
     }
     
-    
     public void estadoInicialBotones(){
-    this.BtnConsultar.setEnabled(true);
-    this.BtnIngresar.setEnabled(false);
-    this.btnModificar.setEnabled(false);
-    this.BtnEliminar.setEnabled(false);
-    this.btnLimpiar.setEnabled(true);
-    
-}
-    
-    
-    /***metodo encargado de asignar el controlador de la botonera***/
-public void agregarControladorP (Controlador_FRM_productos controlador){
-    this.BtnConsultar.addActionListener(controlador);
-    this.btnModificar.addActionListener(controlador);
-    this.BtnIngresar.addActionListener(controlador);
-    this.BtnEliminar.addActionListener(controlador);
-    this.btnLimpiar.addActionListener(controlador);
-    
-    
-}
-
-public void agregarControladorC (Controlador_FRM_clientes controlador){
-    this.BtnConsultar.addActionListener(controlador);
-    this.btnModificar.addActionListener(controlador);
-    this.BtnIngresar.addActionListener(controlador);
-    this.BtnEliminar.addActionListener(controlador);
-    this.btnLimpiar.addActionListener(controlador);
-    
-    
-}
-
-public void agregarControladorU (Controlador_FRM_Usuarios controlador){
-    this.BtnConsultar.addActionListener(controlador);
-    this.btnModificar.addActionListener(controlador);
-    this.BtnIngresar.addActionListener(controlador);
-    this.BtnEliminar.addActionListener(controlador);
-    this.btnLimpiar.addActionListener(controlador);
-}
-
-
-public void agregarControladorProve(Controlador_FRM_proveedores controlador){
-    this.BtnConsultar.addActionListener(controlador);
-    this.btnModificar.addActionListener(controlador);
-    this.BtnIngresar.addActionListener(controlador);
-    this.BtnEliminar.addActionListener(controlador);
-    this.btnLimpiar.addActionListener(controlador);
-    
-}
-
-
-public void habilitarBotoneraAgregar(){
-this.BtnConsultar.setEnabled(false);
-this.btnModificar.setEnabled(false);
-this.BtnIngresar.setEnabled(true);
-this.BtnEliminar.setEnabled(false);
-this.btnLimpiar.setEnabled(true);
-
-
-}
-
-public void habilitarBotoneraModificarEliminar(){
-    
-this.BtnConsultar.setEnabled(false);
-this.btnModificar.setEnabled(true);
-this.BtnIngresar.setEnabled(false);
-this.BtnEliminar.setEnabled(true);
-this.btnLimpiar.setEnabled(true);
-    
-}
-
-    
+        this.btnConsultar.setEnabled(true);
+        this.btnRegistrar.setEnabled(false);
+        this.btnModificar.setEnabled(false);
+        this.btnEliminar.setEnabled(false);
+    }
+    public void habilitarAgregar(){
+        
+        this.btnConsultar.setEnabled(false);
+        this.btnRegistrar.setEnabled(true);
+        this.btnModificar.setEnabled(false);
+        this.btnEliminar.setEnabled(false);
+    }
+    public void habilitarModificarEliminar(){
+        this.btnConsultar.setEnabled(false);
+        this.btnRegistrar.setEnabled(false);
+        this.btnModificar.setEnabled(true);
+        this.btnEliminar.setEnabled(true);
+                
+    }
+            
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -104,86 +86,85 @@ this.btnLimpiar.setEnabled(true);
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        BtnConsultar = new javax.swing.JButton();
-        BtnIngresar = new javax.swing.JButton();
+        btnConsultar = new javax.swing.JButton();
+        btnRegistrar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
-        BtnEliminar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
 
-        jPanel1.setBackground(new java.awt.Color(0, 102, 102));
+        setMaximumSize(new java.awt.Dimension(32767, 32000));
 
-        BtnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/Consultar.png"))); // NOI18N
-        BtnConsultar.setToolTipText("Consultar");
-        BtnConsultar.setActionCommand("Buscar");
+        btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Consultar.png"))); // NOI18N
+        btnConsultar.setToolTipText("Consultar");
+        btnConsultar.setActionCommand("Buscar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
-        BtnIngresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/Registrar.png"))); // NOI18N
-        BtnIngresar.setToolTipText("Ingresar");
-        BtnIngresar.setActionCommand("Registrar");
-        BtnIngresar.setEnabled(false);
+        btnRegistrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Registrar.png"))); // NOI18N
+        btnRegistrar.setToolTipText("Registrar");
+        btnRegistrar.setActionCommand("Registrar");
+        btnRegistrar.setEnabled(false);
 
-        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/Modificar.png"))); // NOI18N
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Modificar.png"))); // NOI18N
         btnModificar.setToolTipText("Modificar");
         btnModificar.setActionCommand("Modificar");
         btnModificar.setEnabled(false);
 
-        BtnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/Eliminar.png"))); // NOI18N
-        BtnEliminar.setToolTipText("Eliminar");
-        BtnEliminar.setActionCommand("Eliminar");
-        BtnEliminar.setEnabled(false);
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Eliminar.png"))); // NOI18N
+        btnEliminar.setToolTipText("Eliminar");
+        btnEliminar.setActionCommand("Eliminar");
+        btnEliminar.setEnabled(false);
 
-        btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/29571273_1912350045464465_7969678650884751360_n.png"))); // NOI18N
+        btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/limpiar.png"))); // NOI18N
+        btnLimpiar.setToolTipText("Limpiar");
         btnLimpiar.setActionCommand("Limpiar");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(BtnConsultar)
-                .addGap(27, 27, 27)
-                .addComponent(BtnIngresar)
-                .addGap(18, 18, 18)
-                .addComponent(btnModificar)
-                .addGap(18, 18, 18)
-                .addComponent(BtnEliminar)
-                .addGap(18, 18, 18)
-                .addComponent(btnLimpiar)
-                .addContainerGap(20, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnLimpiar)
-                    .addComponent(BtnConsultar)
-                    .addComponent(BtnIngresar)
-                    .addComponent(btnModificar)
-                    .addComponent(BtnEliminar))
-                .addGap(24, 24, 24))
-        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(btnConsultar)
+                .addGap(18, 18, 18)
+                .addComponent(btnRegistrar)
+                .addGap(32, 32, 32)
+                .addComponent(btnModificar)
+                .addGap(31, 31, 31)
+                .addComponent(btnEliminar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addComponent(btnLimpiar)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnLimpiar)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnConsultar)
+                            .addComponent(btnRegistrar)
+                            .addComponent(btnModificar))))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnConsultar;
-    private javax.swing.JButton BtnEliminar;
-    private javax.swing.JButton BtnIngresar;
+    private javax.swing.JButton btnConsultar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnModificar;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton btnRegistrar;
     // End of variables declaration//GEN-END:variables
 }

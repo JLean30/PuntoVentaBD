@@ -3,373 +3,368 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Vista;
-
-import Controlador.Controlador_FRM_clientes;
+package vista;
+import controlador.Controlador_FRM_Clientes;
 import javax.swing.JOptionPane;
+//libreria para el manejo del modelo de la tabla
 import javax.swing.table.DefaultTableModel;
-import Modelo.Clientes;
+import modelo.Cliente;
+import modelo.ConexionBD;
 
 /**
  *
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author JeanC
  */
-public class Frm_Clientes extends javax.swing.JFrame {
-
-    public Controlador.Controlador_FRM_clientes controlador;
+public class FRM_Clientes extends javax.swing.JFrame {
     
+    public Controlador_FRM_Clientes controlador;
     private DefaultTableModel modelo;
-    
-    private Clientes clientes;
-    
-    
-    public Frm_Clientes() {
-       initComponents();
-       
-       this.controlador = new Controlador_FRM_clientes(this);
-       this.jP_Botones2.agregarControladorC(controlador);
-       this.estadoInicial();
-       
-       this.modelo = new DefaultTableModel();
-        
-         String [] columnas = new String [7];
-        columnas [0] = "Cédula";
-        columnas[1] = "Nombre";
-        columnas[2] = "Primer Apellido";
-        columnas[3] = "Segundo Apellido";
-        columnas[4] = "Teléfono";
-        columnas[5] = "Dirección";
-        columnas[6] = "Email";
-        
+
+    /**
+     * Creates new form FRM_Clientes
+     */
+    public FRM_Clientes(ConexionBD conex) {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        this.controlador = new Controlador_FRM_Clientes(this,conex);
+        this.modelo = new DefaultTableModel();
+        String[] columnas = new String[5];
+        columnas[0] = "Cedula";
+        columnas[1] = "Nombre Completo";
+        columnas[2] = "Telefono";
+        columnas[3] = "Dirección";
+        columnas[4]= "Email";
+      
+        //asignamos los nombres de columnas al modelo
         this.modelo.setColumnIdentifiers(columnas);
         
-        this.jl_ListaClientes.setModel(modelo);
+        //le asignamos el modelo a la tabla
+        this.jt_ListaClientes.setModel(modelo);
+        // Con este metodo se pueden obtener los TEXT 
+        
+        this.jP_Botones1.agregarControladorClientes(controlador);
+        this.estadoInicial();
+        this.controlador.inicioTabla(conex.tablaActualizarClientes());
     }
     
-    
-
-     public String getCedula(){
-        
-        return this.jt_Cedula.getText();
+    public String getCedulaCliente(){
+        return this.jt_CedulaCliente.getText();
     }
     
-       public String getApellido1(){
-        
-        return this.jt_Apellido1.getText();
-    }
-       
-         public String getApellido2(){
-        
-        return this.jt_Apellido2.getText();
-    }
-         
-           public String getDireccion(){
-        
-        return this.jt_Direccion.getText();
-    }
-           
-             public String getTelefono(){
-        
-        return this.jt_Telefono.getText();
-    }
-             
-               public String getEmail(){
-        
-        return this.jt_Email.getText();
-    }
-               
-                 public String getNombre(){
-        
+    public String getNombre(){
         return this.jt_Nombre.getText();
     }
     
-    public void estadoInicial(){
-             
-             this.jt_Cedula.setText("");
-             this.jt_Nombre.setText("");
-             this.jt_Apellido1.setText("");
-             this.jt_Apellido2.setText("");
-             this.jt_Direccion.setText("");
-             this.jt_Telefono.setText("");
-             this.jt_Email.setText("");
-             
-             this.jt_Cedula.setEnabled(true);
-             this.jt_Nombre.setEnabled(false);
-             this.jt_Apellido1.setEnabled(false);
-             this.jt_Apellido2.setEnabled(false);
-             this.jt_Direccion.setEnabled(false);
-             this.jt_Telefono.setEnabled(false);
-             this.jt_Email.setEnabled(false);
-             
-             this.jP_Botones2.estadoInicialBotones();
-         }
-    
-    
-     public void habilitarAgregar(){
-             
-             this.jt_Cedula.setEnabled(false);
-             this.jt_Apellido1.setEnabled(true);
-             this.jt_Apellido2.setEnabled(true);
-             this.jt_Direccion.setEnabled(true);
-             this.jt_Nombre.setEnabled(true);
-             this.jt_Telefono.setEnabled(true);
-             this.jt_Email.setEnabled(true);
-            
-             this.jP_Botones2.habilitarBotoneraAgregar();
-         }
-    
-      public void mostrarMensaje (String texto){
-             
-             JOptionPane.showMessageDialog(null, texto);
-         }
-      
-      
-      public void agregarClienteTabla(String [] datos){
-    
-    this.modelo.addRow(datos);
+    public String getPrimerApellido(){
+        return this.jt_PriApellido.getText();
     }
+    
+    public String getSegundoApellido(){
+        return this.jt_SegApell.getText();
+    }
+    
+    public String getTelefono(){
+        return this.jt_Telefono.getText();
+    }
+    
+    public String getDireccion(){
+        return this.jt_DireccionCliente.getText();
+    }
+    
+    public String getEmail(){
+        return this.jt_Email.getText();
+    }
+    
+    public  void estadoInicial(){
+        
+        this.jt_CedulaCliente.setText("");
+        this.jt_Nombre.setText("");
+        this.jt_PriApellido.setText("");
+        this.jt_SegApell.setText("");
+        this.jt_DireccionCliente.setText("");
+        this.jt_Email.setText("");
+        this.jt_Telefono.setText("");
+        
+        this.jt_CedulaCliente.setEnabled(true);
+        this.jt_Nombre.setEnabled(false);
+        this.jt_PriApellido.setEnabled(false);
+        this.jt_DireccionCliente.setEnabled(false);
+        this.jt_Telefono.setEnabled(false);
+        this.jt_SegApell.setEnabled(false);
+        this.jt_Email.setEnabled(false);
        
-  public void modificarClienteTabla(String [] datos){
-    
-    for(int fila =0; fila< this.modelo.getRowCount(); fila++){
-    
-    if(this.modelo.getValueAt(fila, 0).equals(datos[0])){
-    this.modelo.setValueAt(datos[1], fila, 1);
-    this.modelo.setValueAt(datos[2], fila, 2);
-    this.modelo.setValueAt(datos[3], fila, 3);
-    this.modelo.setValueAt(datos[4], fila, 4);
-    this.modelo.setValueAt(datos[5], fila, 5);
-    this.modelo.setValueAt(datos[6], fila, 6);
-    break;
-        }
-      }
+        this.jP_Botones1.estadoInicialBotones();
     }
-            
-  public void eliminarClienteTabla(String pClientes){
-    for(int fila=0; fila< this.modelo.getRowCount(); fila ++){
-    if(this.modelo.getValueAt(fila, 0).equals(pClientes)){
-    this.modelo.removeRow(fila);
-    break;
-        }
-      }
-    }
-      
-      public void setCedula(String valor){
-             this.jt_Cedula.setText(valor);
-          
-         }
-      public void setNombre(String valor){
-             this.jt_Nombre.setText(valor);
-          
-         }
-      public void setApellido1(String valor){
-             this.jt_Apellido1.setText(valor);
-          
-         }
-      public void setApellido2(String valor){
-             this.jt_Apellido2.setText(valor);
-          
-         }
-      public void setDireccion(String valor){
-             this.jt_Direccion.setText(valor);
-          
-         }
-      public void setTelefono(String valor){
-             this.jt_Telefono.setText(valor);
-          
-         }
-      public void setEmail(String valor){
-             this.jt_Email.setText(valor);
-          
-         }
-      
-        public void hailitarModificarEliminar(){
-               this.jt_Cedula.setEnabled(false);
-               this.jt_Nombre.setEnabled(true);
-               this.jt_Apellido1.setEnabled(true);
-               this.jt_Apellido2.setEnabled(true);
-               this.jt_Direccion.setEnabled(true);
-               this.jt_Telefono.setEnabled(true);
-                 this.jt_Email.setEnabled(true);
-               this.jP_Botones2.habilitarBotoneraModificarEliminar();
-           }
-      
-      
     
+    public void habilitarAgregar(){
+        
+        this.jt_CedulaCliente.setEnabled(false);
+        this.jt_Nombre.setEnabled(true);
+        this.jt_PriApellido.setEnabled(true);
+        this.jt_SegApell.setEnabled(true);
+        this.jt_DireccionCliente.setEnabled(true);
+        this.jt_Email.setEnabled(true);
+        this.jt_Telefono.setEnabled(true);
+        
+        this.jP_Botones1.habilitarAgregar();
+    }
+    
+    public void mostrarMensaje(String texto){
+        JOptionPane.showMessageDialog(null, texto);
+    }
+    
+    public void setNombre(String valor){
+        this.jt_Nombre.setText(valor);
+    }
+    
+    public void setCedulaCliente(String valor){
+        this.jt_CedulaCliente.setText(valor);
+    }
+    
+     public void setPrimerApellido(String valor){
+         this.jt_PriApellido.setText(valor);
+     }
+     
+     public void setSegundoApellido(String valor){
+         this.jt_SegApell.setText(valor);
+     }
+     
+     public void setTelefono(String valor){
+         this.jt_Telefono.setText(valor);
+     }
+     
+     public void setDireccion(String valor){
+         this.jt_DireccionCliente.setText(valor);
+     }
+     
+     public void setEmail(String valor){
+         this.jt_Email.setText(valor);
+     }
+     
+     public Cliente obtenerCliente(){
+         Cliente cl=new Cliente(this.getCedulaCliente(), this.getNombre(), this.getPrimerApellido(), this.getSegundoApellido(), this.getTelefono(),
+                 this.getDireccion(), this.getEmail());
+         return cl;
+     }
+     
+     public void habilitarModificarEliminar(){
+         
+        this.jt_CedulaCliente.setEnabled(false);
+        this.jt_Nombre.setEnabled(true);
+        this.jt_Email.setEnabled(true);
+        this.jt_PriApellido.setEnabled(true);
+        this.jt_SegApell.setEnabled(true);
+        this.jt_Telefono.setEnabled(true);
+        this.jt_DireccionCliente.setEnabled(true);
+        
+        this.jP_Botones1.habilitarModificarEliminar();
+    }
+     public void agregarUsuarioTabla(String[] datos) {
+        this.modelo.addRow(datos);
+    }
+    
+    public void modificarUsuarioTabla(String[] datos) {
+        for(int fila=0; fila<this.modelo.getRowCount();fila++) {
+            if(this.modelo.getValueAt(fila, 0).equals(datos[0])) {
+                
+                this.modelo.setValueAt(datos[1], fila, 1);
+                this.modelo.setValueAt(datos[2], fila, 2);
+                this.modelo.setValueAt(datos[3], fila, 3);
+                this.modelo.setValueAt(datos[4], fila, 4);
+                
+                break;
+                
+            }
+        }
+    }
+    
+    public void eliminarUsuarioTabla(String pCedula) {
+        for(int fila=0;fila<this.modelo.getRowCount();fila++) {
+            if(this.modelo.getValueAt(fila, 0).equals(pCedula)) {
+                
+                this.modelo.removeRow(fila);
+                break;
+                
+            }
+        }
+    }
+    
+   
+     
+     
+    
+    
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jP_Botones2 = new Vista.JP_Botones();
         jLabel2 = new javax.swing.JLabel();
+        jt_Cedula = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jt_CedulaCliente = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        jt_Nombre = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jt_SegApell = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jt_Cedula = new javax.swing.JTextField();
-        jt_Nombre = new javax.swing.JTextField();
-        jt_Apellido1 = new javax.swing.JTextField();
-        jt_Apellido2 = new javax.swing.JTextField();
         jt_Telefono = new javax.swing.JTextField();
-        jt_Direccion = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jt_DireccionCliente = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
         jt_Email = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        jt_PriApellido = new javax.swing.JTextField();
+        jP_Botones1 = new vista.JP_Botones();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jl_ListaClientes = new javax.swing.JTable();
+        jt_ListaClientes = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
 
-        setTitle("Mantenimiento de clientes");
+        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel2.setFont(new java.awt.Font("Microsoft JhengHei UI", 1, 18)); // NOI18N
+        jLabel2.setText("Cedula Jurídica: ");
+
+        jt_Cedula.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
+
+        setTitle("Mantenimiento de Clientes");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel1.setBackground(new java.awt.Color(0, 153, 153));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
-        jLabel2.setText("Cédula:");
+        jLabel1.setFont(new java.awt.Font("Trebuchet MS", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Clientes:");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 31, -1, -1));
 
-        jLabel3.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
-        jLabel3.setText("Nombre:");
+        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel3.setFont(new java.awt.Font("Microsoft JhengHei UI", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Cédula:");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 87, -1, -1));
 
-        jLabel4.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
-        jLabel4.setText("Primer apellido:");
+        jt_CedulaCliente.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
+        jPanel1.add(jt_CedulaCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(214, 84, 117, -1));
 
-        jLabel5.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
-        jLabel5.setText("Teléfono:");
+        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel4.setFont(new java.awt.Font("Microsoft JhengHei UI", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Nombre:");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 142, -1, -1));
 
-        jLabel6.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
-        jLabel6.setText("Dirección:");
+        jt_Nombre.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
+        jPanel1.add(jt_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(214, 139, 197, -1));
 
-        jLabel7.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
-        jLabel7.setText("Email:");
+        jLabel5.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel5.setFont(new java.awt.Font("Microsoft JhengHei UI", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Primer Apellido:");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 205, -1, -1));
 
-        jLabel8.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
-        jLabel8.setText("Segundo apellido:");
+        jLabel6.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel6.setFont(new java.awt.Font("Microsoft JhengHei UI", 1, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Segundo Apellido:");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 268, -1, -1));
 
-        jt_Cedula.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        jt_SegApell.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
+        jPanel1.add(jt_SegApell, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 265, 191, -1));
 
-        jt_Nombre.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        jLabel7.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel7.setFont(new java.awt.Font("Microsoft JhengHei UI", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Teléfono:");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 334, -1, -1));
 
-        jt_Apellido1.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        jt_Telefono.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
+        jPanel1.add(jt_Telefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(175, 331, 136, -1));
 
-        jt_Apellido2.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        jLabel8.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel8.setFont(new java.awt.Font("Microsoft JhengHei UI", 1, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Dirección:");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 419, -1, -1));
 
-        jt_Telefono.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        jt_DireccionCliente.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
+        jPanel1.add(jt_DireccionCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(175, 416, 266, -1));
 
-        jt_Direccion.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        jLabel9.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel9.setFont(new java.awt.Font("Microsoft JhengHei UI", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Email:");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(39, 487, -1, -1));
 
-        jt_Email.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        jt_Email.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
+        jPanel1.add(jt_Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(175, 484, 238, -1));
 
-        jl_ListaClientes.setModel(new javax.swing.table.DefaultTableModel(
+        jPanel3.setBackground(new java.awt.Color(0, 204, 204));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1240, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(-7, 620, 1240, 10));
+
+        jt_PriApellido.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
+        jPanel1.add(jt_PriApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(214, 202, 197, -1));
+        jPanel1.add(jP_Botones1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 416, -1, -1));
+
+        jt_ListaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Nombre", "Dirección", "PrimerApellido", "SegundoApellido", "Email"
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jl_ListaClientes);
+        jScrollPane1.setViewportView(jt_ListaClientes);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jt_Apellido2)
-                        .addGap(242, 242, 242))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(75, 75, 75)
-                        .addComponent(jP_Botones2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jt_Apellido1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel7)
-                                .addGap(18, 18, 18)
-                                .addComponent(jt_Email, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jt_Nombre))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jt_Cedula, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 60, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(jLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jt_Direccion))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(0, 43, Short.MAX_VALUE)
-                                        .addComponent(jLabel5)
-                                        .addGap(30, 30, 30)
-                                        .addComponent(jt_Telefono, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(32, 32, 32))))
-            .addComponent(jScrollPane1)
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(437, 79, 773, 270));
+
+        jPanel4.setBackground(new java.awt.Color(0, 204, 204));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1230, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jt_Cedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(34, 34, 34)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jt_Nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6)
-                            .addComponent(jt_Direccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(jt_Telefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(60, 60, 60)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jt_Apellido1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
-                    .addComponent(jt_Email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(54, 54, 54)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jt_Apellido2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jP_Botones2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
         );
+
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 1230, 10));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -379,25 +374,23 @@ public class Frm_Clientes extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-       this.controlador.consolidarInformacion();
+       //this.controlador.consolidarInformacion();
     }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
      */
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -405,16 +398,20 @@ public class Frm_Clientes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private Vista.JP_Botones jP_Botones2;
+    private javax.swing.JLabel jLabel9;
+    private vista.JP_Botones jP_Botones1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jl_ListaClientes;
-    private javax.swing.JTextField jt_Apellido1;
-    private javax.swing.JTextField jt_Apellido2;
     private javax.swing.JTextField jt_Cedula;
-    private javax.swing.JTextField jt_Direccion;
+    private javax.swing.JTextField jt_CedulaCliente;
+    private javax.swing.JTextField jt_DireccionCliente;
     private javax.swing.JTextField jt_Email;
+    private javax.swing.JTable jt_ListaClientes;
     private javax.swing.JTextField jt_Nombre;
+    private javax.swing.JTextField jt_PriApellido;
+    private javax.swing.JTextField jt_SegApell;
     private javax.swing.JTextField jt_Telefono;
     // End of variables declaration//GEN-END:variables
 }

@@ -3,148 +3,135 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-package Controlador;
-
+package controlador;
+import modelo.ConexionBD;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import Vista.Frm_Productos;
-import Modelo.Producto;
-import Modelo.ConexionBD;
+import  java.awt.event.ActionListener;
+import java.util.ArrayList;
+import modelo.Producto;
+import vista.FRM_Productos;
 
 
+/**
+ *
+ * @author Melber
+ */
+public class Controlador_FRM_productos implements ActionListener {
 
-public class Controlador_FRM_productos implements ActionListener{
+    private FRM_Productos frmProductos;
 
-    /***Declaracion de la interfaz a usar**/
-    private Frm_Productos frmProductos;
-    //metodos de interfaz//
-    
-    public MetodosProducto metodosProductos;
-    private ArchivoProductos archivo;
-    
-    //se  declara la conexion
+     //se  declara la conexion
     private  ConexionBD conexion;
     
-    
-    public Controlador_FRM_productos(Frm_Productos frm) {
-        this.frmProductos = frm;
-        this.archivo = new ArchivoProductos();
-        this.metodosProductos = new MetodosProducto(this.archivo.getProductos());
-        
-        this.conexion = new ConexionBD();
-        
-    }
     @Override
-    public void actionPerformed(ActionEvent ae) {
-        if(ae.getActionCommand().equals("Limpiar")){
-            //El estado de la interfaz es inicial
-            this.frmProductos.estadoInicial();
+    public void actionPerformed(ActionEvent e) {
+        
+         if(e.getActionCommand().equals("Limpiar")){
+           this.frmProductos.estadoInicial();
         }
         
-        if(ae.getActionCommand().equals("Productos")){
-            this.frmProductos.estadoInicial();
-            this.frmProductos.setVisible(true);
+        if(e.getActionCommand().equals("Buscar")){
+           this.buscarProducto();
         }
-        
-        
-        
-        if(ae.getActionCommand().equals("Buscar")){
-            Producto temporal = null;
-            temporal = this.metodosProductos.buscar(this.frmProductos.getCodigo());
+        if(e.getActionCommand().equals("Registrar")){
+             modelo.Producto producto = null;
+             producto = this.frmProductos.obtenerProductoFrm();
+                //this.metodosProductos.agregar(producto);
+                this.conexion.registrarProducto(producto);
+                this.frmProductos.mostrarMensaje("Producto Registrado");
+                this.frmProductos.estadoInicial();
+                String[] datos = new String [7];
+                datos[0] = producto.getCodigo();
+                datos[1] = producto.getDescripcion();
+                datos[2] = String.valueOf(producto.getPrecioCompra());
+                datos[3] = String.valueOf(producto.getPorDescuento());
+                datos[4] =String.valueOf(producto.getPorImpuesto()) ;
+                datos[5] = producto.getFechaRegistro();     
+                datos[6] = String.valueOf(producto.precioVenta());
+       
+                this.frmProductos.agregarProductoTabla(datos);
             
+            
+        }
+        if(e.getActionCommand().equals("Modificar")){
+            Producto producto=null;
+            producto=this.frmProductos.obtenerProductoFrm();
+            this.conexion.modificarProducto(producto);
+            //this.metodosProductos.modificar(producto);
+            this.frmProductos.estadoInicial();
+             String[] datos = new String [7];
+                datos[0] = producto.getCodigo();
+                datos[1] = producto.getDescripcion();
+                datos[2] = String.valueOf(producto.getPrecioCompra());
+                datos[3] = String.valueOf(producto.getPorDescuento());
+                datos[4] =String.valueOf(producto.getPorImpuesto()) ;
+                datos[5] = producto.getFechaRegistro();     
+                datos[6] = String.valueOf(producto.precioVenta());
+            this.frmProductos.modificarProductoTabla(datos);
+            this.frmProductos.mostrarMensaje("Producto modificado de forma correcta");
+                    
+                   
+        }
+        if(e.getActionCommand().equals("Eliminar")){
+            //this.metodosProductos.eliminar(this.frmProductos.txtCodigo.getText());
+            this.conexion.eliminarProducto(this.frmProductos.txtCodigo.getText());
+            this.frmProductos.eliminarProductoTabla(this.frmProductos.getCodigo());
+            this.frmProductos.estadoInicial();
+            this.frmProductos.mostrarMensaje("Producto eliminado de forma correcta");
+        }
+    }
+    public void buscarProducto(){
+         modelo.Producto temporal = null;
             if(this.conexion.buscarProducto(this.frmProductos.getCodigo())){
                 temporal = this.conexion.getProductoTemporal();
             }
-            
-            //si existe puede modificarlo o eliminarlo//
-            if(temporal != null){
+            //temporal= this.metodosProductos.buscar(this.frmProductos.getCodigo());
+           if( temporal !=null){
                 
-                this.frmProductos.setCodigo(temporal.getCodigo());
-                this.frmProductos.setDescripcion(temporal.getDescripcion());
-                this.frmProductos.setPrecioCompra(String.valueOf(temporal.getPrecioCompra()));
-                this.frmProductos.setDescuento(String.valueOf(temporal.getDescuento()) );
-                this.frmProductos.setImpuesto(String.valueOf(temporal.getImpuesto()));
-                this.frmProductos.setFechaRegistro(temporal.getFecha());
-                this.frmProductos.setPrecioVenta(String.valueOf(temporal.precioVenta()));
+                this.frmProductos.jP_Botones1.habilitarModificarEliminar();
+                this.frmProductos.habilitarAgregar();
+                this.frmProductos.txtDescripcion.setText(temporal.getDescripcion());
+                this.frmProductos.txtPrecioCompra.setText(String.valueOf(temporal.getPrecioCompra()));
+                this.frmProductos.txtPorDescuento.setText(String.valueOf(temporal.getPorDescuento()));
+                this.frmProductos.txtPorImpuesto.setText(String.valueOf(temporal.getPorImpuesto()));
+                this.frmProductos.txtFechaRegistro.setText(temporal.getFechaRegistro());
+                this.frmProductos.txtPrecioVenta.setText(String.valueOf(temporal.precioVenta()));
                 
-                
-                this.frmProductos.hailitarModificarEliminar();
-            
-           } else{//si no existe puede agragarlo//
-                this.frmProductos.mostrarMensaje("Producto sin registrar \n Ingrese uno nuevo  ");
+            }
+            else{
+                this.frmProductos.jP_Botones1.habilitarAgregar(); 
                 this.frmProductos.habilitarAgregar();
                 
-               
+                
+              }
+    }
+    /*
+    public void consolidarInformacion(){
+        this.archivoJSON.setArray(this.metodosProductos.getArray());
+        this.archivoJSON.escribirDatos();
+    }*/
+    public void actualizarTabla(ArrayList<Producto> array){
+        for(Producto item:array){
+            if(item!=null){
+                String[] datos = new String [7];
+                datos[0] = item.getCodigo();
+                datos[1] = item.getDescripcion();
+                datos[2] = String.valueOf(item.getPrecioCompra());
+                datos[3] = String.valueOf(item.getPorDescuento());
+                datos[4] =String.valueOf(item.getPorImpuesto()) ;
+                datos[5] = item.getFechaRegistro();     
+                datos[6] = String.valueOf(item.precioVenta());
+                this.frmProductos.agregarProductoTabla(datos);
+                
             }
         }
         
-        if(ae.getActionCommand().equals("Registrar")){
-        Producto producto=  null;
-        producto = this.metodosProductos.obtenerInformacion(this.frmProductos);
-        
-       // this.metodosProductos.agregar(producto);
-       this.conexion.registrarProducto(producto);
-       
-
-                    String[] datos = new String [7];
-         datos[0] = producto.getCodigo();
-        datos[1] = producto.getDescripcion();
-        datos[2] = String.valueOf(producto.getPrecioCompra());
-        datos[3] = String.valueOf(producto.getDescuento());
-        datos[4] =String.valueOf(producto.getImpuesto()) ;
-        
-        datos[5] = producto.getFecha();     
-        datos[6] = String.valueOf(producto.precioVenta());
-       
-     this.frmProductos.agregarProductoTabla(datos);
-
-        this.frmProductos.mostrarMensaje("Producto registrado");
-        this.frmProductos.estadoInicial();
-        
-        }
-        
-        if(ae.getActionCommand().equals("Modificar")){
-            Producto producto =null;
-            producto = this.metodosProductos.obtenerInformacion(this.frmProductos);
-            
-            //this.metodosProductos.modificar(producto);
-            this.conexion.modificarProducto(producto);
-            
-             String[] datos = new String [7];
-         datos[0] = producto.getCodigo();
-        datos[1] = producto.getDescripcion();
-        datos[2] = String.valueOf(producto.getPrecioCompra());
-        datos[3] = String.valueOf(producto.getDescuento());
-        datos[4] =String.valueOf(producto.getImpuesto()) ;
-        
-        datos[5] = producto.getFecha();     
-        datos[6] = String.valueOf(producto.precioVenta());
-            this.frmProductos.modificarProductoTabla(datos);
-            this.frmProductos.estadoInicial();
-            this.frmProductos.mostrarMensaje("Producto modificado");
-            
-        }
-        
-        if(ae.getActionCommand().equals("Eliminar")){
-            
-            //this.metodosProductos.eliminar(this.frmProductos.getCodigo());
-            this.conexion.eliminarProducto(this.frmProductos.getCodigo());
-            this.frmProductos.eliminarProductoTabla(this.frmProductos.getCodigo());
-            this.frmProductos.estadoInicial();
-            this.frmProductos.mostrarMensaje("Producto eliminado");
-        }
         
     }
-
-    
-public void consolidarInformacion(){
-        
-//        this.archivo.setProductos(this.metodosProductos.productos);
-//        this.archivo.crearArchivo();
-//        this.archivo.escribirInformacion();
+    public Controlador_FRM_productos(FRM_Productos frm,ConexionBD conex){
+        this.frmProductos=frm;
+        this.conexion = conex;
     }
     
     
-
 }
